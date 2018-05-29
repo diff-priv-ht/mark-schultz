@@ -1,0 +1,720 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{physics}
+\usepackage{fullpage}
+
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[section]
+
+\newcommand{\bin}{\Bqty{0,1}}
+\newcommand{\enc}{\text{Enc}}
+\newcommand{\dec}{\text{Dec}}
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newcommand{\cnt}{\text{count}}
+
+
+\begin{document}
+\title{HW for Week 1}
+\author{Mark Schultz}
+\maketitle
+\section{Probability Pt 1}
+\begin{exercise}[Dobrow 2.20]
+Let $X\sim\text{Bern}(0.5)$ be the r.v. corresponding to the initial (either black or white) counter.
+The bag then contains $\Bqty{W, X}$.
+We want to compute:
+\begin{align*}
+\Pr[\text{Second draw W}\mid\text{First draw W}] &= \Pr[\text{Second draw W}\mid\text{First draw W},X = W]\Pr[X = W] \\
+&+ \Pr[\text{Second draw W}\mid \text{First draw W}, X = B] \\
+& = (1)\frac{1}{2} + (0)\frac{1}{2} = \frac{1}{2}
+\end{align*}
+\end{exercise}
+\begin{exercise}[Dobrow 3.2]
+Let $A,B,C$ be independent, with:
+\begin{equation}
+\Pr[A] = 1/3,\quad\Pr[B] = 1/4,\quad \Pr[C] = 1/5
+\end{equation}
+Find:
+\begin{enumerate}
+\item \begin{align*}
+\Pr[ABC] &= \Pr[A]\Pr[B]\Pr[C] = \frac{1}{60}
+\end{align*}
+\item \begin{align*}
+\Pr[A\cup B\cup C] = \Pr[A] + \Pr[B] + \Pr[C] = \frac{20+15+12}{60} = \frac{47}{60}
+\end{align*}
+\item \begin{align*}
+\Pr[AB\mid C] = \frac{\Pr[ABC]}{\Pr[C]} = \frac{1/60}{1/5} = \frac{1}{12}
+\end{align*}
+\item \begin{align*}
+\Pr[B\mid AC] = \frac{\Pr[ABC]}{\Pr[AC]} = \Pr[B] = \frac{1}{4}
+\end{align*}
+\item \begin{align*}
+\Pr[\text{At most one event occurs}] &= \Pr[A^cB^cC^c]+ \Pr[AB^cC^c] + \Pr[A^cBC^c] + \Pr[A^cB^cC] \\
+& = \frac{2}{3}\frac{3}{4}\frac{4}{5} + \frac{1}{3}\frac{3}{4}\frac{4}{5} + \frac{2}{3}\frac{1}{4}\frac{4}{5} + \frac{2}{3}\frac{3}{4}\frac{1}{5} \\
+& = \frac{1}{60}\pqty{24 + 12 + 8 + 6} \\
+& = \frac{50}{60} = 5/6
+\end{align*}
+\end{enumerate}
+\end{exercise}
+\begin{exercise}[Dobrow 4.14]
+Let $X,Y,Z$ be i.i.d. with $X\sim 1 + \text{Bern}(1/2)$.
+Find the pmf of $(X,Y,Z)$.
+
+We have the pmf will be the product of the original pmf's, which will end up being a uniform probability distribution on the cube with vertices $(x_1,x_2,x_3)$, where $x_i\in\Bqty{1,2}$.
+\end{exercise}
+\begin{exercise}[Dobrow 4.19]
+A joint pmf is given by:
+\begin{equation}
+\Pr[X = 1,Y = 1] = 1/8,\quad \Pr[X = 2, Y= 1] = 1/8,\quad\Pr[X = 1,Y = 2] = 1/4,\quad\Pr[X = 2, Y = 2] = 1/2
+\end{equation}
+\begin{enumerate}
+\item Find the marginal distributions of $X$ and $Y$:
+\begin{align*}
+\Pr[X = x] & = \sum_{y\in Y} \Pr[X = x,Y = y] = \begin{cases}
+3/8& x = 1 \\
+5/8& x = 2
+\end{cases} \\
+\Pr[Y = y] & = \sum_{x\in X}\Pr[X =x, Y = y] = \begin{cases}
+1/4 & y = 1 \\
+3/4 & y = 2
+\end{cases}
+\end{align*}
+\item Are $X$ and $Y$ independent?
+We have that:
+\begin{equation}
+1/8 = \Pr[X = 1, Y = 1] \neq \Pr[X = 1]\Pr[Y = 1] = \frac{3}{32}
+\end{equation}
+\item Compute $\Pr[XY\leq 3]$
+We have that:
+\begin{align*}
+\Pr[XY\leq 3] = 1 - \Pr[XY\neq 4] = 1 - \Pr[X = 2,Y = 2] = 1/2
+\end{align*}
+\item Compute $\Pr[X+Y > 2]$
+\begin{align*}
+\Pr[X+Y > 2] = 1 - \Pr[X+Y \leq 2] = 1 - \Pr[X = 1,Y = 1] = 7/8
+\end{align*}
+\end{enumerate}
+\end{exercise}
+\section{Crypto Pt 1}
+\begin{exercise}[K\&L 2.3]
+Prove or refute: Any encryption scheme with message space $\mathcal{M}$ is perfectly secret if and only if, for every probability distribution over $\mathcal{M}$ and every $c_0,c_1\in\mathcal{C}$, we have $\Pr[C = c_0] = \Pr[C = c_1]$.
+
+False:
+Consider a perfectly secret encryption scheme with $\mathcal{M} = \mathcal{C} = \mathcal{K} = \bin$ (such as a one-time pad).
+Now, consider a new encryption scheme where $\mathcal{C} = \Bqty{0,1,2}$, but $\enc$ and $\text{Dec}$ aren't changed at all.
+Then, we have that:
+\begin{equation}
+0 = \Pr[\enc_K(m) = 2] \neq \Pr[\enc_K(m) = 0] = \frac{1}{2}
+\end{equation}
+\end{exercise}
+\begin{exercise}[K\&L 2.6]
+For each of the following encryption schemes, state whether the scheme is perfectly secret.
+Justify your answer:
+\begin{enumerate}
+\item $M = \Bqty{0,\dots,4}$, $Gen$ chooses key uniformly from $\Bqty{0,\dots,5}$.
+Enk returns $[k+m\mod 5]$, dec returns $[c-k\mod 5]$.
+
+This will not be perfectly secret, as $k = 0$ and $k' = 5$ being in the same residue class mod 5 will bias the encryption.
+Specifically, let $m_1 = 0, m_2 = 1$, and $c = 0$.
+Then, we have that:
+\begin{equation}
+\Pr[\enc_K(0) = 0] = \frac{2}{6},\quad \Pr[\enc_K(1) = 0] = \frac{1}{6}
+\end{equation}
+(Because $0+0\equiv 0$, and $5+0\equiv 0$, but only $4+1\equiv 0$).
+\item This will be perfectly secret.
+This is because:
+\begin{align*}
+\Pr[\enc_K(m_1) = c] &= \Pr[(m_1||0)\oplus (K||0) = c] \\\
+& = \Pr[m_1||0 = (K||0)\oplus c]
+\end{align*}
+We want to know if $\Pr[m_1 || 0 = (K||0)\oplus c] = \Pr[m_2||0 = (K||0)\oplus c]$.
+If the last bit of $c$ is 1, then the probability of each event will be zero.
+If the last bit of $c$ is zero, then the problem reduces to the security of the one-time pad.
+As the one-time pad is perfectly secure, this would be perfectly secure as well.
+
+Note that $\mathcal{C} = \bin^\ell$ leads to this being secure as well.
+The only potential problem is at $c = b||1$, but then:
+\begin{equation}
+\Pr[\enc_K(m_1) = c] = \Pr[\enc_K(m_2) =c]
+\end{equation}
+This is either $1/2^{l-1} = 1/2^{l-1}$, or $0 = 0$.
+Either way, it's fine.
+\end{enumerate}
+\end{exercise}
+\begin{exercise}[K\&L 2.7]
+Is the one-time pad where $\mathcal{K} = \Bqty{x\in\bin^\ell\mid x\neq 0^\ell}$ perfectly secret?
+
+Nope, it's well-known that perfectly secret schemes have $\abs{\mathcal{K}}\geq \abs{\mathcal{M}}$, which this scheme contradicts.
+\end{exercise}
+\begin{exercise}[K\&L 2.13]
+Perfectly secret for pairs.
+\begin{enumerate}
+\item By exercise 2.2, we have that $\enc_K$ may be made deterministic solely by redefining $\mathcal{K}$.
+
+Now, let $c_1 = c_2$.
+Then, we have that $\enc_k(m_1) = \enc_k(m_2)$.
+It follows that $\dec_k(\enc_k(m_1)) = \dec_k(\enc_k(m_2))\implies m_1 = m_2$.
+We then have that:
+\begin{equation}
+\Pr[M_1 = m_1\wedge M_2 = m_2\mid C_1 = c_1\wedge C_2 = c_1] = 0,\quad \Pr[M_1 = m_1\wedge M_2 = m_2] \neq 0 (\forall m_1,m_2)
+\end{equation}
+\item 
+
+Let $\mathcal{M} = \mathcal{C} = \mathbb{F}_p$ for a prime $p$.
+Intuitively, we should expect $\abs{\mathcal{K}} \geq 2\abs{\mathcal{M}}$ (both $(m_0,m_1)$ could be presented to $\enc_K$ at the same time, and if this wasn't true this wouldn't match with our normal notion of perfect security).
+For this reason, let $\mathcal{K} = \mathbb{F}_p\times \mathbb{F}_p^\times$ be the uniform distribution on all \emph{pairs} of (distinct) elements.
+We have that $\mathbb{F}_p^\times = \mathbb{F}_p\setminus\Bqty{0}$ is the set of all (multiplicatively) invertible elements of $\mathbb{F}_p$.
+
+Our encryption function will be:
+\begin{equation}
+\enc_{(k_0,k_1)}(m) = k_0 + k_1m
+\end{equation}
+We can decrypt (correctly) via:
+\begin{equation}
+\dec_{(k_0,k_1)}(c) = \frac{c-k_0}{k_1}
+\end{equation}
+
+Now, we want to show that $\Pr[M_1 = m_1\wedge M_2 = m_2\mid C_1 = c_1\wedge C_2 = c_2] = \Pr[M_1 = m_1\wedge M_2 = m_2]$.
+This will come down to showing that $\Pr[C_1 = c_1\wedge C_2 = c_2\mid M_1 = m_1\wedge M_2 = m_2] = \Pr[C_1 = c_1\wedge C_2 = c_2]$, and then applying Bayes' theorem.
+
+We can examine this conditional probability:
+\begin{align*}
+\Pr[K_0+K_1m_1 = c_1 \wedge K_0+K_1m_2 = c_2] &= \sum_{(K_0,K_1)\in\mathbb{F}_p\times\mathbb{F}_p^\times}\Pr[k_0+k_1m_1 = c_1\wedge k_0+k_1m_2 = c_2]\Pr[(K_0,K_1)] \\
+& = \frac{1}{p(p-1)}\sum_{(K_0,K_1)}\Pr[k_0+k_1 m_1 = c_1\wedge k_0+k_1m_2 = c_2]
+\end{align*}
+The probability this occurs will be precisely $\frac{1}{p(p-1)}$.
+To see this, note that $(K_0,K_1)$ parametrize \emph{all} (non-constant) lines $f:\mathbb{F}_p\to\mathbb{F}_p$.
+Any line is completely determined by two points.
+One line will pass through the ``points'' $(m_1,c_1)$, $(m_2,c_2)$, and all others will not.
+So, the event will be true if $(K_0,K_1)$ is the correct line, which happens with the stated probability.
+
+So, we get that:
+\begin{align*}
+\Pr[K_0+K_1m_1 = c_1\wedge K_0+K_1m_2 = c_2] &= \frac{1}{p(p-1)}\sum_{(K_0,K_1)} \frac{1}{p(p-1)} \\
+& = \frac{p(p-1)}{p^2(p-1)^2} = \frac{1}{p(p-1)}
+\end{align*}
+This is precisely the number of elements in $\mathbb{F}_p$.
+
+If you didn't want to be restricted to prime-power fields, the above argument could be repeated with $\mathbb{F}_q$ where $q = p^k$.
+The only difference is that $q = p^k$ would be inserted everywhere.
+\end{enumerate}
+\end{exercise}
+\section{Probability Pt 2}
+\begin{exercise}[Derive Dobrow Eq. 4.14]
+\end{exercise}
+\begin{exercise}
+Evaluate the following:
+\begin{equation}
+X\independent Y\iff \Cov(X,Y) = 0
+\end{equation}
+$[\implies]$.
+
+Assume $X\independent Y$.
+Then, we have that:
+\begin{align*}
+\Cov(X,Y) &= \E[(X-\mu_X)(Y-\mu_Y)] \\
+& = \sum_{x,y} (x-\mu_X)(y-\mu_Y)p_{X,Y}(X =x ,Y = y) \\
+& = \sum_{x,y} \pqty{xy- (\mu_Yx+\mu_Xy)+\mu_X\mu_Y }p_X(X = x)p_Y(Y = y),\quad X\independent Y \\
+& = \sum_{x,y}xyp_X(X = x)p_Y(Y = y) -\sum_{x,y}(\mu_Yx+\mu_Xy)p_X(X = x)p_Y(Y = y) \\
+&+\mu_X\mu_Y\sum_{x,y} p_X(X = x)p_Y(Y = y) \\
+& = \sum_{x,y}xyp_X(X = x)p_Y(Y = y) - \sum_x \mu_Xp_X(X = x)\sum_y yp_Y(Y=  y) \\
+&-\sum_y \mu_Yp_Y(Y = y)\sum_x xp_X(X = x) + \mu_X\mu_Y \\
+& = \sum_{x,y} xyp_X(X = x)p_Y(Y = y) -\mu_X\mu_Y\sum_x p_X(X = x) - \mu_X\mu_Y\sum_y p_Y(Y = y) + \mu_X\mu_Y \\
+&= \sum_x x p_X(X =x )\sum_y yp_Y(X = x) - \mu_X\mu_Y-\mu_X\mu_Y+\mu_X\mu_Y \\
+& = \sum_x xp_X(X = x)\mu_Y -\mu_X\mu_Y \\
+& = \mu_Y\mu_X - \mu_X\mu_Y \\
+& = 0
+\end{align*}
+
+$[\impliedby]$
+The other direction is false, because $\Cov(X,Y)$ is a measure of \emph{linear} dependence, but $X\independent Y$ requires that there is \emph{no} dependence of any sort.
+
+We can try to find a counterexample.
+Let $X\sim\text{Unif}\Bqty{-1,0,1}$, and let $Y\sim f(X)$, for some to-be-determined function $f$.
+Then, we have that:
+\begin{align*}
+\Cov(X,Y) &= \E[XY] - \E[X]\E[Y] \\
+& = \sum_{x = -1}^1\sum_{y \in A} xyp_{X,Y}(X = x,Y = y) - 0 = \sum_{x = -1}^1 xf(x)p_{X}(X = x) = -f(-1) + 0 + f(1)
+\end{align*}
+So, we just need some $f$ such that $f(1) = f(-1)$, or some \emph{even} $f(x)$.
+Choosing $f(x) = x^2$ works, so we get that $\Cov(X,X^2)= 0$, but clearly $X^2$ is dependent on $X$.
+
+It seems like we could generalize this for $X$ being any symmetric, mean 0 distribution, and $f$ being any even function.
+If we remember that sums are just integrals with respect to the counting measure $\mu$, this becomes ``easy'' to show, as we have that:
+\begin{equation}
+\E[Xf(X)] = \int xf(x)p_{X}(x)\dd \mu
+\end{equation}
+As $f(x)$ and $p_X(x)$ are both ``even'', the integrand will be odd, so if we integrate it over a origin-symmetric domain, it will be $0$.
+\end{exercise}
+\begin{exercise}[4.27]
+Variance of the sum of $n$ tetrahedronal dice rolls.
+
+Tetrahedron die rolls will be distributed $\text{Unif}\Bqty{1,\dots,4}$.
+Let $X_i$ be distributed as this (and i.i.d.), and $Y = \sum_{i = 1}^n X_i$.
+Then, we have that:
+\begin{equation}
+\Var(Y) = n\Var(X)
+\end{equation}
+Now, we have that:
+\begin{equation}
+\E[X] = \frac{1+2+3+4}{4} = 5/2
+\end{equation}
+We then have that:
+\begin{equation}
+\E[X^2] = \frac{1+4+9+16}{4} = 15/2
+\end{equation}
+It follows that:
+\begin{equation}
+\Var(X) = 15/2 -(5/2)^2 = 30/4 - 25/4 = 5/4\implies \Var(Y) = 5n/4
+\end{equation}
+\end{exercise}
+\begin{exercise}[4.37]
+Suppose $X\independent Y$, with $\Var[X] = \sigma_X^2$ and $\Var[Y] = \sigma_Y^2$.
+Let $Z = wX+(1-w)Y$ with $w\in (0,1)$.
+Find the variance of $Z$.
+What value of $w$ is this minimized for?
+\begin{align*}
+\Var(Z) = w^2\sigma_X^2 + (1-w)^2\sigma_Y^2 = w^2\sigma_X^2 + (1-2w+w^2)\sigma_Y^2
+\end{align*}
+(Note no covariance term due to independence).
+We then have that:
+\begin{align*}
+\pdv{}{w}\Var[Z] = 2w\sigma_X^2 -2\sigma_Y^2 + 2w\sigma_Y^2 = 0\implies w = \frac{\sigma_Y^2}{\sigma_X^2+\sigma_Y^2}
+\end{align*}
+\end{exercise}
+\begin{exercise}[4.48]
+Let $X$ be the first of two fair die rolls (so $X\sim\text{Unif}\Bqty{1,\dots,6}$. Also, let $Y$ be the second die roll).
+Let $M$ be the maximum of the two rolls.
+\begin{itemize}
+\item Find the conditional pmf of $M$ given $X = x$.
+
+Given that the first die roll has occurred, we have that: 
+\begin{align*}
+\Pr[M = m\mid X = x] &= \Pr[\max(Y,x) = m\mid X = x] \\
+&= \begin{cases}
+0 & x > m \\
+\Pr[Y \leq m] & x = m \\
+\Pr[Y = m] & x < m
+\end{cases}\\
+&=\begin{cases}
+0 & x > m \\
+m/6 & x = m \\
+1/6 & x < m
+\end{cases}
+\end{align*}
+\item Find $\E[M\mid X = x]$
+\begin{align*}
+\E[M\mid X = x] &= \sum_{m = 1}^6 m\Pr[M = m\mid X = x] \\
+& = \sum_{m < x} m \Pr[M= m\mid X =x ] + x\Pr[M = x\mid X = x] + \sum_{m > x}m \Pr[M = m\mid X = x] \\
+& = 0 + x(x/6) + (6-x+1)(1/6) = \frac{x^2-x+7}{6}
+\end{align*}
+\item Find the joint PMF of $X$ and $M$:
+\begin{align*}
+\Pr[M = m, X = x] &= \Pr[M = m\mid X = x]\Pr[X = x] \\
+& = \Pr[M = m\mid X =x ]\frac{1}{6} \\
+& = \begin{cases}
+0 & x> m \\
+m/36 & x = m \\
+1/36 & x < m
+\end{cases}
+\end{align*}
+\end{itemize}
+\end{exercise}
+\section{Diff Privacy Pt 1}
+Let $X$ be a database of reed students, where we have their name, their year at Reed, and their major.
+\begin{itemize}
+\item The sensitivity of this is 1, as each student has one major.
+
+As the sensitivity is only one, this can be acchieved by standard query counting techniques.
+Specifically, count the number of students, then add $\text{Lap}(1/.7) = \text{Lap}(1.428)$ noise to each count.
+Specifically, make a single vector-valued query $q:X\to\mathbb{R}^k$ where there are $k$ majors.
+As each student impacts at most one count in this query, $\Delta q = 1$, so this will be $\epsilon = 0.7$ differentially-private.
+\item Yes, as it's just post-processing
+\item We could do this with two vector-valued queries (one as before, another $q:X\to \mathbb{R}^4$ where each axis corresponds to Freshman, Sophomore, Junior, Senior).
+Then, we could allocate $\epsilon/2$ privacy to each (or any $a,b> 0$ privacy with $a+b = \epsilon$) to get the result with $(\epsilon,0)$-DP.
+
+We could alternatively do this with one query, but the function will now have sensitivity $\Delta f = 2$ (each person can change the count of both the majors, and the years).
+As the noise is $\text{Lap}(\Delta f/\epsilon)$, we have that:
+\begin{equation}
+\frac{\Delta f}{(\epsilon/2)} = \frac{2\Delta f}{\epsilon}
+\end{equation}
+So these both involve adding the same amount of noise.
+
+\item This could be done with the exponential mechanism. The utility here should be:
+\begin{equation}
+u(x,\text{major}) = \#\Bqty{\text{people in }x\text{ with the given major}}
+\end{equation}
+We can now investigate how accurate this is.
+
+The exponential mechanism has the ``guarantee'' that it is highly unlikely that the returned element $r$ has a utility score that is less than $OPT_u(x)$ by more than an additive factor of:
+\begin{equation}
+O((\Delta u/\epsilon)\log\abs{\mathcal{R}})
+\end{equation}
+More specifically, the probability it differs by more than:
+\begin{equation}
+\frac{2\Delta u}{\epsilon}(\ln\abs{\mathcal{R}} + t)
+\end{equation}
+is less than $e^{-t}$.
+Here, $\mathcal{R}$ is the list of all majors at Reed.
+Ignoring ad-hoc majors (which is fine, as they'll never be most populous anyway), it appears there are $40$ official majors offered.
+This means our additive bound is bounded by:
+\begin{equation}
+\frac{2}{\epsilon}(3.7+t) = \frac{7.4+2t}{\epsilon}
+\end{equation}
+We therefore have that, with probability bounded above by $e^{-t}$, that:
+\begin{equation}
+\abs{OPT_u(x) - \text{Output}} \leq \frac{7.4+2t}{\epsilon}
+\end{equation}
+The accuracy of the Laplace mechanism can be given by Theorem 3.8 in the book:
+
+Let $f:\mathbb{N}^{\abs{\chi}}\to\mathbb{R}^k$ and let $y = \mathcal{M}_L(x,f(\cdot),\epsilon)$.
+Then, for all $\delta\in(0,1]$:
+\begin{equation}
+\Pr[\norm{f(x)-y}_\infty \geq \ln\pqty{\frac{k}{\delta}}\pqty{\frac{\Delta f}{\epsilon}}]\leq \delta
+\end{equation}
+Corr. 3.12 said something similar for the Exponential mechanism.
+Specifically, it said that:
+\begin{equation}
+\Pr\bqty{\abs{u(\mathcal{M}_E(x,u,\mathcal{R})) - \text{OPT}_U(x)}\leq \frac{2\Delta u}{\epsilon}(\ln\abs{\mathcal{R}}) + t)}\leq e^{-t}
+\end{equation}
+So try to make these look similar, set $\delta = e^{-t}$ (now, $\delta\in[0,\infty)$).
+This gives the expression:
+\begin{equation}
+\Pr[\norm{f(x)-y}_\infty \geq \frac{\Delta f}{\epsilon}\pqty{\ln(k) + t}] \leq e^{-t}
+\end{equation}
+
+
+
+\item The Laplace mechanism seems inappropriate for this (specializing to think about a single major, we could represent years as $1, 2, 3, 4$, but if there are $100$ 1's, and $50$ 4's, and nothing else, we could easily output $2$ in [major] error).
+
+Instead, thinking about this via the exponential mechanism.
+To do this, we'll have to define a utility function.
+For now, specialize to the problem for a \emph{single major}.
+
+Let $u_m(x,r)$ be the utility (for major $m$) of $r$ given data $x$.
+Then, $u_m(x,r)$ should give utility to each (potentially outputted) year somehow following the true rankings of the years.
+This means, if $\# F \leq \# J \leq \#\text{Sophomore} \leq \#\text{Senior}$, then the utilities of each result should follow this inequality as well.
+
+An easy choice is $u_m(x,r) = \#\Bqty{\text{students in that year (with that major)}}$.
+
+We then need to define an \emph{overall} utility (or query all $40$ utilities with privacy $\epsilon/40$, and then post-process the results.
+This seems bad at face value, but I haven't investigated it more).
+We can view our intermediate result as $(u_{m_1}(x,r),u_{m_2}(x,r),\dots,u_{m_{40}}(x,r))\in\mathbb{R}^{40}$.
+We then somehow need to combine these all into a single real number.
+Here, we have some choices to make:
+\begin{itemize}
+\item To combine them, we could use some sort of norm.
+An $\ell_1$-norm may be appropriate (especially since it makes the $\Delta u$ analysis much easier than other $\ell_p$ norms).
+\item Before we combine them, potentially with an $\ell_p$ norm, do we want to \emph{normalize} the various utilities?
+Doing so will mean that we can potentially be \emph{very} inaccurate for large departments, but not doing so means we can potentially be \emph{very} inaccurate for small departments.
+\end{itemize}
+If we don't normalize things, we have that:
+\begin{align*}
+u(x,r) &= \sqrt[p]{\sum_{i = 1}^{40} \abs{\#\Bqty{\text{Students in major }m_i\text{ with year }r_i}}^p}
+\end{align*}
+We then have that:
+\begin{equation}
+\Delta u = \max_r \max_{\text{neigh. }x,y}\abs{u(x,r) - u(y,r)}
+\end{equation}
+Adding a new student can impact at most one major, so it will impact at most one summand in the norm (regardless of $r$).
+As a result, this computation will boil down to\footnote{There will be an application of triangle inequality first, but this is omitted due to how ``easy'' it is.}:
+\begin{align*}
+\Delta u &\leq \sqrt[p]{x+1} -\sqrt[p]{x}
+\end{align*}
+Worst case scenario is $x = 0$, so $\Delta u = 1$.
+
+Even if $x\neq 0$ (so our database actually has records), we get the same worst-case bound.
+This is because $p$-th roots are concave, so $\sqrt[p]{x+y}\geq\sqrt[p]{x}+\sqrt[p]{y}$.
+
+It follows the ``biggest'' $\Delta u$ will occur when all records are in a single major, in a single year, and then the computation becomes:
+\begin{equation}
+\Delta u \leq \abs{D}+1 - \abs{D} = 1
+\end{equation}
+
+\begin{exercise}
+\begin{enumerate}
+\item I don't think this is a fair statement.
+As an easy example, if they smoke, and it's discovered there's some strong correlation between that and something else (say cancer), people will learn there's a decent chance that person has that other thing.
+\item This seems fairer.
+Specifically:
+\begin{equation}
+\Pr[\text{Participation causes something to be learned}] \leq e^\epsilon \Pr[\text{Something learned without participation}]
+\end{equation}
+Here, $e^\epsilon = e^{.2}\approx 1.22$.
+So, people will have a $20\%$ higher chance of learning something about that person if they participate.
+I'd tell them this is the precise meaning of ``learn much'', and let them decide if this is worth it.
+\item This is essentially the previous question, but ``learning much about you'' means ``learning whether you satisfy the predicate `This person participated in the study'''.
+\end{enumerate}
+\end{exercise}
+\begin{exercise}
+\begin{enumerate}
+\item Deterministic, non-constant functions can't be differentially private.
+\item This isn't differentially private.
+Let $x$ be a database with $a$ yes responses, and $y$ be one with $a+1$ yes responses.
+Then, we would need that:
+\begin{align*}
+\Pr[M(x)\in\Bqty{a-1,a+1}]\not\leq e^\epsilon\Pr[M(y)\in\Bqty{a-1,a+1}]
+\end{align*}
+The LHS of this is $1$, and the RHS of this is $0$.
+So, this can't be differentially private.
+\item This also won't be differentially private.
+Let $x$ and $y$ be as before.
+Then:
+\begin{align*}
+\Pr[M(x)\in\Bqty{a}]\not\leq e^\epsilon\Pr[M(y)\in\Bqty{a}]
+\end{align*}
+The LHS of this $1/2$, but the RHS of this is 0.
+\item The mechanism here is:
+\begin{enumerate}
+\item Flip a coin. If heads, release $a$.
+\item If tails, flip another coin. If heads, release $a+1$, if tails, release $a-1$.
+\end{enumerate}
+\end{enumerate}
+Let $x$ be a database with $a$ yes responses, and $y$ be a database with $a+1$ yes responses.
+Then, we have that:
+\begin{equation}
+\Pr[M(x) = k] = \begin{cases}
+1/2 & k = a \\
+1/4 & k \in\Bqty{a-1,a+1}
+\end{cases}
+\end{equation}
+We also have that:
+\begin{equation}
+\Pr[M(y) = k] = \begin{cases}
+1/2 & k = a+1 \\
+1/4 & k \in\Bqty{a,a+2}
+\end{cases}
+\end{equation}
+This motivates looking at $S = \Bqty{a-1}$.
+Then, we have that:
+\begin{equation}
+\Pr[M(x) = a-1] \leq e^\epsilon\Pr[M(y) = a-1]
+\end{equation}
+The LHS of this is $1/4$, but the RHS of this is $0$, so this is a contradiction.
+\item 
+We'll let $Y$ denote the random variable that we release.
+Let $x = (x_1,x_2,\dots,x_{500})$.
+let $B_i\sim\text{Bern}(p)$ be i.i.d. Bernoulli r.v.s.
+Then, we have that:
+\begin{equation}
+Y(x) = \sum_{i = 1}^{500} x_i \oplus B_i
+\end{equation}
+Let $x$ be a database with $a$ yes responses, and $y$ be a database with $a+1$ yes responses.
+
+Given $x$, we can attempt to analyze $Y(x)$ by noting that $Y(x)$ is the sum of $a$ $\text{Bern}(p)$ r.v.'s, and $500-a$ $\text{Bern}(1-p)$ r.v.'s.
+We can more simply say that:
+\begin{equation}
+Y(x)\sim \text{Binom}(a,p) + \text{Binom}(500 - a,1-p)
+\end{equation}
+We can use the convolution formula to find the distribution of this.
+Specifically, if $Z\sim X+Y$, then:
+\begin{align*}
+p_Z(t) &= \sum_{\text{y}\in\text{Supp}(Y)}p_X(t-y)p_Y(t)
+\end{align*}
+Here, let $X\sim\text{Binom}(a,p)$, and $Y\sim\text{Binom}(500-a,1-p)$.
+Then, we have that:
+\begin{align*}
+p_Z(t) &= \sum_{y = 0}^{500-a}p_X(t-y)p_Y(t) \\
+& = \sum_{y = 0}^{500-a}\pqty{\binom{a}{t-y}(p)^{t-y}(1-p)^{a-(t-y)}}\pqty{\binom{500-a}{t}(1-p)^tp^{500-a-t}} \\
+& = \sum_{y = 0}^{500-a}\binom{a}{t-y}\binom{500-a}{t} p^{500-a-y}(1-p)^{a+y} \\
+& = \sum_{y = 0}^{500-a} \frac{a!}{(t-y)!(a-t+y)!}\frac{(500-a)!}{t!(500-a-t)!}p^{500-a-y}(1-p)^{a+y}
+\end{align*}
+
+Now, if $p = 0$ or $p = 1$, this will deterministically be either $a$ or $500-a$ respectively, which will therefore not be private.
+
+If $p = 0.5$, we get that $Y(x)\sim\text{Binom}(a,p) + \text{Binom}(500-a,p) = \text{Binom}(500,p)$.
+Here, the output of is only dependent on the size of the database, and not the contents of it at all.
+
+If $p = 0.1$, we have that $Y(x)\sim\text{Binom}(a,0.1) + \text{Binom}(500-a,0.9)$.
+To show this is $\epsilon$-differentially private, we need to show that for all $\mathcal{S}\subseteq\mathbb{Z}$, that if $x,y$ are neighboring databases, then:
+\begin{equation}
+\Pr[M(x)\in S] \leq e^\epsilon \Pr[M(y)\in S]
+\end{equation}
+Note that $\Pr[M(x)\in\Bqty{s_1,s_2,\dots,s_k}] = \sum_{j =1}^k \Pr[M(x) = s_j]$, so we need to compute $\Pr[M(x) = s_j]$.
+We have that (given $x$ has $a$ yes responses):
+\begin{equation}
+\Pr[M(x) = k] = \sum_{y =0}^{500-a}\binom{a}{t-y}\binom{500-a}{t}(0.1)^{500-a-y}(0.9)^{a+y}
+\end{equation}
+
+\end{exercise}
+\section{Finding PDFS}
+\begin{exercise}
+
+Let $X\sim\text{Exp}(\lambda)$, and $Y\sim\text{Exp}(\lambda)$.
+Let $W = X+Y$.
+What's $f_W$?
+\begin{align*}
+F_W(w) &= \Pr[W \leq w] \\
+& = \Pr[X+Y \leq w] \\
+& = \iint_{(x,y):X+Y\leq w} f_{X,Y}(x,y)\dd x\dd y \\
+& = \int_{x = 0}^w\int_{y = 0}^{w-x} f_X(x)f_Y(y)\dd y \dd x,\qquad X\independent Y \\
+& = \int_{x = 0}^w\int_{y = 0}^{w-x} \lambda e^{-\lambda x}\lambda e^{-\lambda y}\dd y\dd x \\ 
+& = \lambda^2\int_{x = 0}^w\int_{y = 0}^{w-x} e^{-\lambda x-\lambda y}\dd y\dd x \\
+& = \lambda^2\int_{x = 0}^we^{-\lambda x}\int_{y = 0}^{w-x}e^{-\lambda y}\dd y\dd x \\
+& = \lambda^2\int_{x = 0}^w e^{-\lambda x}\eval(-\frac{1}{\lambda}e^{-\lambda y}|_0^{w-x}\dd x \\
+& = \lambda^2\int_{x = 0}^w e^{-\lambda x} \pqty{-\frac{e^{-\lambda(w-x)}}{\lambda} + \frac{1}{\lambda}}\dd x \\
+& = \lambda\int_{x = 0}^w -e^{-\lambda w} + e^{-\lambda x}\dd x \\
+& = -\lambda w e^{-\lambda w} -e^{-\lambda w}+1 \\
+f_W(w) &= -\lambda e^{-\lambda w} + \lambda^2 we^{-\lambda w} +\lambda e^{-\lambda w} \\
+& = \lambda^2 we^{-\lambda w}
+\end{align*}
+\end{exercise}
+\begin{exercise}
+Let $Z\sim\mathcal{N}(0,1)$.
+Find the pdf of $X = Z^2$.
+
+We have that:
+\begin{align*}
+F_X(x) &= \Pr[X \leq x] \\
+& = \Pr[Z^2 \leq x] \\
+& = \Pr[-\sqrt{x}\leq Z\leq \sqrt{x}] \\
+& = F_Z(\sqrt{x}) - F_Z(-\sqrt{x}) \\
+f_X(x) &= \frac{1}{2\sqrt{x}}f_Z(\sqrt{x}) + \frac{1}{2\sqrt{x}}f_Z(-\sqrt{x}) \\
+& = \frac{1}{2\sqrt{x}}\frac{1}{\sqrt{2\pi}}\pqty{e^{-x/2} + e^{-x/2}} \\
+& = \frac{e^{-x/2}}{\sqrt{2\pi x}}
+\end{align*}
+\end{exercise}
+\end{itemize}
+\newpage
+\begin{exercise}
+Prepare talk on something --- Advanced Composition Theorems.
+\end{exercise}
+\section{What is Composition?}
+We want composition to mean \emph{at least} two things:
+\begin{enumerate}
+\item Querying the \emph{same} database with \emph{multiple} differentially private algorithms.
+So querying $Q(x), H(x), G(x)$, or even just querying $Q(x)$, $Q(x)$, $Q(x)$.
+
+It's important to note that:
+\begin{equation}
+(Q\circ H\circ G)(x)
+\end{equation}
+is \emph{not} composition --- after we query $G(x)$ first, the rest is just post-processing.
+\item Querying \emph{multiple} databases that all contain the same person, while keeping their \emph{cumulative} privacy loss low.
+This is harder because it's intrinsically \emph{adaptive} --- the following situation is plausible:
+\begin{itemize}
+\item An adversary queries $Q(x)$
+\item After seeing $Q(x)$, the adversary tries to make a new database $y$ that somehow \emph{depends} on the information in $Q(x)$
+\item The adversary queries $H(y)$, and repeats this process.
+\end{itemize}
+\end{enumerate}
+First, we'll introduce an alternative definition of differential privacy that ends up being equivalent to our initial definition.
+For two random variables $Y,Z$ taking values in the same domain, we define the \emph{max divergence}\footnote{The $\infty$ is there because this is a special case of the Renyi Divergence of parameter $\infty$.} to be:
+\begin{equation}
+D_\infty (Y||Z) = \max_{S\subseteq\text{Supp}(Y)}\pqty{\ln\pqty{\frac{\Pr[Y\in S]}{\Pr[Z\in S]}}}
+\end{equation}
+
+Then, $\mathcal{M}$ is differentially private if and only if, for any two neighboring databases $x,y$ we have that:
+\begin{equation}
+D_\infty(\mathcal{M}(x)||\mathcal{M}(y)) \leq \epsilon
+\end{equation}
+(and similarly with $x$ and $y$ permuted).
+
+We can see this because:
+\begin{align*}
+\exp(D_\infty(\mathcal{M}(x)||\mathcal{M}(y))) &\leq e^\epsilon \\
+\exp(\max_{S\subseteq\text{Supp}(\mathcal{M}(x))}\pqty{\ln(\frac{\Pr[\mathcal{M}(x)\in S]}{\Pr[\mathcal{M}(y)\in S]})})&\leq e^\epsilon \\
+\max_{S\subseteq\text{Supp}(\mathcal{M}(x))}\pqty{\frac{\Pr[\mathcal{M}(x)\in S]}{\Pr[\mathcal{M}(y)\in S]}}&\leq e^\epsilon,\quad \exp(\cdot)\text{ is strictly monotonically increasing} \\
+\implies \forall S\subseteq\text{Supp}(\mathcal{M}(x))\qquad \frac{\Pr[\mathcal{M}(x)\in S]}{\Pr[\mathcal{M}(y)\in S]} &\leq e^\epsilon
+\end{align*}
+We'll also need a version of $D_\infty$ that is equivalent to $(\epsilon,\delta)$ differential privacy.
+This will be:
+\begin{equation}
+D_\infty^\delta (Y||Z) = \max_{S\subseteq\text{Supp}(Y):\Pr[Y\in S] > \delta}\pqty{\ln\pqty{\frac{\Pr[Y\in S] - \delta}{\Pr[Z\in S]}}}
+\end{equation}
+Then, we have that $(\epsilon,\delta)$ differential privacy is equivalent to $D^\delta_\infty (\mathcal{M}(x)||\mathcal{M}(y)) \leq \epsilon$ for all neighboring databases.
+
+
+Now, how do we model adaptive composition?
+Let $\mathcal{F}$ be the ``a family of database access mechanisms'' (it could be the set of all $\epsilon$-differentially private mechanisms).
+
+We define two experiments ($0$ and $1$) as follows.
+We'll let $A$ be an ``adversary'', which will mean a ``stateful randomized algorithm''.
+
+\begin{enumerate}
+\item For $i = 1$ ... $k$:
+\begin{enumerate}
+\item $A$ outputs two adjacent databases, $x_i^0, x_i^1$, a mechanism $\mathcal{M}_i$, and parameters $w_i$
+\item $A$ receives $y_i\leftarrow\mathcal{M}_i(w_i,x_i^b)$
+\end{enumerate}
+\end{enumerate}
+Now, it will be useful to mention the \emph{view} of $A$ throughout the execution of this experiment.
+This is essentially ``the information $A$ has access to''.
+As an example, for ``Experiment $0$'', we'll have that $b = 0$, but $A$ \emph{won't know} that $b = 0$.
+What $A$ \emph{will} know is $\text{view}(A)$, and is:
+\begin{enumerate}
+\item The randomness that $A$ uses (as a randomized algorithm)
+\item All of the $(y_1,\dots,y_k)$ that are output by $\mathcal{M}_i$
+\item All of the $(x_i^0,x_i^1)$
+\item All of the $\mathcal{M}_i$
+\item All of the $w_i$
+\end{enumerate}
+Technically, only the first two are necessary to state, as the rest can be derived from them.
+
+Intuitively, if we have $x_i^0$ always contain Bob's data, and $x_i^1$ always not contain Bob's data, then experiment 0 is somehow analogous to ``Bob's data being in database $x^0$'', and experiment 1 is ``Bob's data not being in database $x^1$''.
+We can then define a notion of differential privacy for a \emph{family} of database access mechanisms.
+
+\textbf{Defn:}
+We say that a family $\mathcal{F}$ of database access mechanisms satisfies $(\epsilon,\delta)$-differential privacy under $k$-fold adaptive composition if, for every adversary $A$, we have that $D^\delta_\infty (V^0||V^1)\leq \epsilon$, where $V^i$ is the view of $A$ in experiment $i$.
+
+For $\epsilon$-differential privacy, just note that $D^0_\infty(X||y) = D_\infty (X||Y)$.
+
+\textbf{Thm: }
+For all $\epsilon,\delta,\delta'>0$, the class of $(\epsilon,\delta)$-differentially private mechanisms satisfies $(\epsilon',k\delta+\delta')$-differential privacy under $k$-fold adaptive composition for:
+\begin{equation}
+\epsilon' = \sqrt{2k\ln(1/\delta')\epsilon} + k\epsilon(e^\epsilon - 1)
+\end{equation}
+
+\textbf{Proof: }
+The view of the adversary $A$ is $v = (r,y_1,\dots,y_k)$, where $r$ are the coins, and the $y_i$ are from the $\mathcal{M}_i$.
+
+We'll define $V^i  = (R^i,Y_1^i,\dots,Y_k^i)$ denote the random variable corresponding to the view of $A$ in experiment $i$.
+
+Let:
+\begin{equation}
+B = \Bqty{v : \Pr[V^0 = v] > e^{\epsilon'} \Pr[V^1 = v]}
+\end{equation}
+This is intuitively the ``set of events that would violate $(\epsilon,0)$ differential privacy''.
+We want to show that:
+\begin{equation}
+\Pr[V^0\in B]\leq \delta
+\end{equation}
+This means that for any set (of views) $S$, we'll have\footnote{By the Union Bound}:
+\begin{equation}
+\Pr[V^0\in S] \leq \Pr[V^0\in S\setminus B]+\Pr[V^0\in B]\leq e^{\epsilon'}\Pr[V^1\in S]+ \delta
+\end{equation}
+This is equivalent to showing $D_\infty^\delta(V^0||V^1)\leq\epsilon'$.
+So, all we have to show is that $\Pr[V^0\in B]\leq \delta$.
+
+Now, note that we have that:
+\begin{align*}
+\ln\pqty{\frac{\Pr[V^0 = v]}{\Pr[V^1 = v]}} & = \ln\pqty{\frac{\Pr[R^0 = r]}{\Pr[R^1 = r]}\prod_{k = 1}^k\frac{\Pr[Y_i^0 = y_i\mid R^0 = r,Y_1^0 = y_1,\dots,Y_{i-1}^0 = y_{i-1}]}{\Pr[Y_i^1 = y_i\mid R^1 = r,Y_1^1 = y_1,\dots,Y_{i-1}^1 = y_{i-1}]}}
+\end{align*}
+Here, all that's happening is that we're rewriting:
+\begin{equation}
+\Pr[ABC] = \Pr[B\mid AB]\Pr[A\mid B]\Pr[B]
+\end{equation}
+Assuming the coins are picked uniformly randomly, we'll have that:
+\begin{equation}
+\frac{\Pr[R^0 = r]}{\Pr[R^1 = r]} = 1
+\end{equation}
+We can drop this term, and use that $\ln(\prod_i A_i) = \sum_i \ln(A_i)$.
+
+We can then use properties of logarithms to get:
+\begin{align*}
+\ast &= \sum_{i = 1}^k \ln\pqty{\frac{\Pr[Y_i^0 = y_i\mid R^0 = r,Y_1^0 = y_1,\dots,Y_{i-1}^0 = y_{i-1}]}{\Pr[Y_i^1 = y_i\mid R^1 = r,Y_1^1 = y_1,\dots,Y_{i-1}^1 = y_{i-1}]}} \\
+&\overset{\text{def}}{=}\sum_{i = 1}^k c_i(r,y_1,\dots,y_k)
+\end{align*}
+To analyze $c_i(r,y_1,\dots,y_k)$, note that we're conditioning on \emph{everything} but $Y_{i}^0$.
+We can think of this meaning that the prefix $(r,y_1,\dots,y_{i-1})$ is fixed
+\section{Statistics 1}
+\begin{exercise}
+Let $X\sim \mathcal{N}(\mu,\sigma^2)$.
+\end{exercise}
+\end{document}
