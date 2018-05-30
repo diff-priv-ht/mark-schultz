@@ -644,6 +644,8 @@ We'll let $A$ be an ``adversary'', which will mean a ``stateful randomized algor
 \item $A$ receives $y_i\leftarrow\mathcal{M}_i(w_i,x_i^b)$
 \end{enumerate}
 \end{enumerate}
+We can view this as a sort of ``Left Right oracle'' experiment (explain what this means).
+
 Now, it will be useful to mention the \emph{view} of $A$ throughout the execution of this experiment.
 This is essentially ``the information $A$ has access to''.
 As an example, for ``Experiment $0$'', we'll have that $b = 0$, but $A$ \emph{won't know} that $b = 0$.
@@ -692,9 +694,10 @@ This means that for any set (of views) $S$, we'll have\footnote{By the Union Bou
 This is equivalent to showing $D_\infty^\delta(V^0||V^1)\leq\epsilon'$.
 So, all we have to show is that $\Pr[V^0\in B]\leq \delta$.
 
+First we'll treat the case of $\delta = 0$, so the composition of $(\epsilon,0)$-differentially private mechanisms.
 Now, note that we have that:
 \begin{align*}
-\ln\pqty{\frac{\Pr[V^0 = v]}{\Pr[V^1 = v]}} & = \ln\pqty{\frac{\Pr[R^0 = r]}{\Pr[R^1 = r]}\prod_{k = 1}^k\frac{\Pr[Y_i^0 = y_i\mid R^0 = r,Y_1^0 = y_1,\dots,Y_{i-1}^0 = y_{i-1}]}{\Pr[Y_i^1 = y_i\mid R^1 = r,Y_1^1 = y_1,\dots,Y_{i-1}^1 = y_{i-1}]}}
+\epsilon' = \ln\pqty{\frac{\Pr[V^0 = v]}{\Pr[V^1 = v]}} & = \ln\pqty{\frac{\Pr[R^0 = r]}{\Pr[R^1 = r]}\prod_{k = 1}^k\frac{\Pr[Y_i^0 = y_i\mid R^0 = r,Y_1^0 = y_1,\dots,Y_{i-1}^0 = y_{i-1}]}{\Pr[Y_i^1 = y_i\mid R^1 = r,Y_1^1 = y_1,\dots,Y_{i-1}^1 = y_{i-1}]}}
 \end{align*}
 Here, all that's happening is that we're rewriting:
 \begin{equation}
@@ -712,7 +715,49 @@ We can then use properties of logarithms to get:
 &\overset{\text{def}}{=}\sum_{i = 1}^k c_i(r,y_1,\dots,y_k)
 \end{align*}
 To analyze $c_i(r,y_1,\dots,y_k)$, note that we're conditioning on \emph{everything} but $Y_{i}^0$.
-We can think of this meaning that the prefix $(r,y_1,\dots,y_{i-1})$ is fixed
+We can think of this meaning that the prefix $(r,y_1,\dots,y_{i-1})$ is fixed, and then we look at both the expected value and expectation of $c_i(r,y_1,\dots,y_{i-1},Y_i)$ (which is essentially the numerator/denominator within the $\ln(\cdot)$).
+
+After $(r,y_1,\dots,y_{i-1})$ is fixed, both $x_i^0$ and $x_i^1$ are determined\footnote{They're dependent on all prior random choices, and the intitial randomness --- both of which are conditioned on here}.
+It follows that $Y_i^0\sim \mathcal{M}_i(w_i,x_i^0)$.
+By the $\ln(\cdot)$ realization, we have that:
+\begin{equation}
+c_i(r,y_1,\dots,y_{i-1},y_i) = \ln\pqty{\frac{\Pr[\mathcal{M}_i(w_i,x_i^0) = y_i]}{\Pr[\mathcal{M}_i(w_i,x_i^1) = y_i]}},\quad \forall y_i
+\end{equation}
+$\epsilon$ differential privacy says (by definition) this is bounded by $\epsilon$.
+
+Now, we want to define a different quantity than the max divergence known as the \emph{KL Divergence}.
+This is defined by:
+\begin{equation}
+D(Y||Z) = \mathbb{E}_{y\sim Y}\pqty{\ln\pqty{\frac{\Pr[Y = y]}{\Pr[Z =y]}}}
+\end{equation}
+It's known that $D(Y||Z) \geq 0$, and it's $= 0$ if and only if $Y$ and $Z$ are identically distributed.
+This has some bad properties:
+\begin{itemize}
+\item It's not symmetric in $Y$ and $Z$
+\item It doesn't satisfy triangle inequality
+\item It can be infinite
+\end{itemize}
+It \emph{does} have the following property that we'll use though:
+
+If $Y$ and $Z$ satisfy $D_\infty(Y||Z)\leq \epsilon$ and $D_\infty(Z||Y) \leq \epsilon$, then $D(Y||Z) \leq \epsilon (e^\epsilon -1)$.
+
+We now see that $c_i$ is exactly a KL divergence:
+\begin{equation}
+c_i(R^0,Y_1^0,\dots,Y_i^0\mid R^0=r,Y_1^0 = y_1,\dots,Y_{i-1}^0 = y_{i-1}] = D(\mathcal{M}_i(w_i,x_i^0)||\mathcal{M}_i(w_i,x_i^1))
+\end{equation}
+By the prior nice property, we get that this is $\leq \epsilon(e^\epsilon -1)$.
+
+We can then use ``Azuma's Inequality'' to get that, for the r.v.'s $C_i$ we've been implicitly working with, that:
+\begin{equation}
+\Pr[V^0\in B] = \Pr[\sum_i C_i > \epsilon'] < \delta'
+\end{equation}
+
+To extend this to the $\delta' > 0$ case, we'll reduce it to the proof of the $\delta' = 0$ case.
+This requires some technical results relating $D^\delta_\infty(\cdot||\cdot)$ to both $D_\infty$, and another quantity called the \emph{statistical distance} $\Delta$.
+Note that this second quantity is both \emph{actually a metric}\footnote{also known as the ``Total Variational Distance''}.
+
+Still, there's a routine way to reduce the $(\epsilon,\delta)$ case to the $(\epsilon,0)$ case (although it may require checking the books errata to understand things like $D^\delta$, which don't appear to be defined yet).
+
 \section{Statistics 1}
 \begin{exercise}
 Let $X\sim \mathcal{N}(\mu,\sigma^2)$.

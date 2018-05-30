@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{physics}
+\usepackage{fullpage}
+
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[section]
+
+\newcommand{\bin}{\Bqty{0,1}}
+\newcommand{\enc}{\text{Enc}}
+\newcommand{\dec}{\text{Dec}}
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
+
+\newcommand{\cnt}{\text{count}}
+\begin{document}
+\title{Homework for Week Two}
+\author{Mark Schultz}
+\maketitle
+\section{Statistics}
+Working through the problem set Andrew posted on Slack.
+
+1a was completed (and is on my RSTUDIO server).
+
+1b:
+
+Let $X_{ij}\sim\mathcal{N}(\mu,\sigma^2)$ be i.i.d.
+Then, find the distribution of:
+\begin{equation}
+W = \sum_{j = 1}^k\sum_{i = 1}^{n_j}(X_{ij} - \overline{X}_j)^2
+\end{equation}
+where:
+\begin{equation}
+\overline{X}_j = \frac{1}{n_j}\sum_{i = 1}^{n_j}X_{ij}
+\end{equation}
+We can define the random variable $Z_{ij}$ as:
+\begin{equation}
+Z_{ij} = X_{ij} - \overline{X}_j = \pqty{1 - \frac{1}{n_j}}X_{ij} - \frac{1}{n_j}\sum_{\substack{i = 1 \\ i\neq j}}^jX_{ij}
+\end{equation}
+As the $X_{ij}$ here are all independent normals, we can then show that $Z_{ij}\sim\mathcal{N}\pqty{0,\frac{\sigma^2}{n_j}}$.
+We then want to add a bunch of $Z_{ij}^2$ together (each $Z_{ij}^2$ will \emph{individually} be $\chi^2_1$), but the $Z_{ij}$ will \emph{not} be independent generically.
+
+We then might wonder about:
+\begin{align*}
+\text{Cov}(Z_{ij}^2,Z_{k\ell}^2) &= \text{Cov}\pqty{\pqty{(1 - n_j^{-1})X_{ij} - n_j^{-1}\sum_{\substack{i = 1\\ i\neq j}}^j X_{ij}}^2, \pqty{(1 - n_\ell^{-1})X_{k\ell} - n_\ell^{-1}\sum_{\substack{k = 1\\ k\neq \ell}}^j X_{k\ell}}^2} \\
+& = \text{Cov}\pqty{(1-n_j^{-1})^2 X_{ij}^2}
+\end{align*}
+Note that when $X^2,Y^2$ are both mean zero (which is the case here), we get that:
+\begin{equation}
+\text{Cov}(X^2, Y^2) = \mathbb{E}[X^2Y^2] = \mathbb{E}[(XY)^2]
+\end{equation}
+We therefore want to find (in terms of $X_{ij}$) what $X_{i_1j_1}X_{i_2j_2}$ looks like.
+\section{Laplace Plus ChiSquare}
+We have that the MGF of $X\sim\text{Lap}(\mu, b)$ is:
+\begin{equation}
+\frac{\exp(\mu t)}{1-b^2t^2},\quad \abs{t} < 1/b
+\end{equation}
+The MGF of $Y\sim\chi^2_{df}$ is:
+\begin{equation}
+(1-2t)^{-df/2},\quad t < 1/2
+\end{equation}
+It follows that:
+\begin{equation}
+m_{X+Y}(t) = \frac{1}{\sqrt{1-2t}^{df}}\frac{e^{\mu t}}{1-b^2t^2}
+\end{equation}
+
+\end{document}

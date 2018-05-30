@@ -1,0 +1,181 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      5617,        171]
+NotebookOptionsPosition[      4924,        152]
+NotebookOutlinePosition[      5259,        167]
+CellTagsIndexPosition[      5216,        164]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"laplaceMGF", "[", 
+   RowBox[{"t_", ",", "\[Mu]_", ",", "b_"}], "]"}], " ", ":=", 
+  FractionBox[
+   RowBox[{"Exp", "[", 
+    RowBox[{"\[Mu]", " ", "*", " ", "t"}], "]"}], 
+   RowBox[{"1", " ", "-", " ", 
+    RowBox[{
+     RowBox[{"b", "^", "2"}], " ", "*", " ", 
+     RowBox[{"t", "^", "2"}]}]}]]}]], "Input",
+ CellChangeTimes->{{3.736645208072879*^9, 3.736645221062986*^9}, {
+  3.736645258154999*^9, 3.736645275928926*^9}, {3.736645337855298*^9, 
+  3.736645352445367*^9}, {3.736645450787874*^9, 3.7366454514800873`*^9}},
+ CellLabel->"In[1]:=",ExpressionUUID->"040c82e5-0368-485b-bf42-bcea20080073"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"chiSqMGF", "[", 
+   RowBox[{"t_", ",", " ", "df_"}], "]"}], " ", ":=", " ", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"1", " ", "-", " ", 
+     RowBox[{"2", "t"}]}], ")"}], "^", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"-", " ", "df"}], "/", "2"}], ")"}]}]}]], "Input",
+ CellChangeTimes->{{3.736645357850276*^9, 3.736645362639763*^9}, {
+  3.736645402618092*^9, 3.736645434066626*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"af195d0a-fab6-4f38-ad33-ce850bd0d2b5"],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"desiredMGF", "[", 
+    RowBox[{"t_", ",", " ", "\[Mu]_", ",", " ", "b_", ",", " ", "df_"}], 
+    "]"}], " ", ":=", " ", 
+   RowBox[{
+    RowBox[{"laplaceMGF", "[", 
+     RowBox[{"t", ",", "\[Mu]", ",", "b"}], "]"}], " ", "*", " ", 
+    RowBox[{"chiSqMGF", "[", 
+     RowBox[{"t", ",", "df"}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.736645435915543*^9, 3.73664551185938*^9}, {
+  3.7366456541697893`*^9, 3.736645655034906*^9}},
+ CellLabel->"In[5]:=",ExpressionUUID->"bb5c6f31-2117-4140-8ff3-0c9421fcb535"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Simplify", "[", 
+  RowBox[{"InverseLaplaceTransform", "[", 
+   RowBox[{
+    RowBox[{"desiredMGF", "[", 
+     RowBox[{"t", ",", " ", "0", ",", " ", "b", ",", " ", "df"}], "]"}], ",", 
+    " ", "t", ",", " ", "x"}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.736645667580802*^9, 3.736645688343493*^9}, {
+   3.73664572442246*^9, 3.736645764275651*^9}, 3.7366458421735764`*^9},
+ CellLabel->"In[12]:=",ExpressionUUID->"9f897c30-fcf7-4674-86a0-782f985da4b3"],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", 
+   RowBox[{"2", " ", "b", " ", 
+    RowBox[{"Gamma", "[", 
+     FractionBox["df", "2"], "]"}]}]], 
+  RowBox[{
+   SuperscriptBox["\[ExponentialE]", 
+    RowBox[{"-", 
+     FractionBox["x", "b"]}]], " ", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{"-", "x"}], ")"}], 
+    RowBox[{"df", "/", "2"}]], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{
+      SuperscriptBox["\[ExponentialE]", 
+       FractionBox[
+        RowBox[{"2", " ", "x"}], "b"]], " ", 
+      SuperscriptBox[
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"-", "1"}], "+", 
+           FractionBox["2", "b"]}], ")"}], " ", "x"}], ")"}], 
+       RowBox[{
+        RowBox[{"-", "df"}], "/", "2"}]], " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{"Gamma", "[", 
+          FractionBox["df", "2"], "]"}]}], "+", 
+        RowBox[{"Gamma", "[", 
+         RowBox[{
+          FractionBox["df", "2"], ",", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"-", 
+              FractionBox["1", "2"]}], "+", 
+             FractionBox["1", "b"]}], ")"}], " ", "x"}]}], "]"}]}], ")"}]}], 
+     "+", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        RowBox[{"-", 
+         FractionBox[
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"2", "+", "b"}], ")"}], " ", "x"}], "b"]}], ")"}], 
+       RowBox[{
+        RowBox[{"-", "df"}], "/", "2"}]], " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"Gamma", "[", 
+         FractionBox["df", "2"], "]"}], "-", 
+        RowBox[{"Gamma", "[", 
+         RowBox[{
+          FractionBox["df", "2"], ",", 
+          RowBox[{"-", 
+           FractionBox[
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"2", "+", "b"}], ")"}], " ", "x"}], 
+            RowBox[{"2", " ", "b"}]]}]}], "]"}]}], ")"}]}]}], 
+    ")"}]}]}]], "Output",
+ CellChangeTimes->{{3.7366457312934847`*^9, 3.736645771404529*^9}, 
+   3.736645844635323*^9},
+ CellLabel->"Out[12]=",ExpressionUUID->"f64086e7-2b25-4871-b8c3-7bcbeed5da1e"]
+}, Open  ]]
+},
+WindowSize->{808, 911},
+WindowMargins->{{322, Automatic}, {33, Automatic}},
+FrontEndVersion->"11.3 for Linux x86 (64-bit) (March 6, 2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 635, 14, 56, "Input",ExpressionUUID->"040c82e5-0368-485b-bf42-bcea20080073"],
+Cell[1196, 36, 499, 13, 31, "Input",ExpressionUUID->"af195d0a-fab6-4f38-ad33-ce850bd0d2b5"],
+Cell[1698, 51, 579, 13, 55, "Input",ExpressionUUID->"bb5c6f31-2117-4140-8ff3-0c9421fcb535"],
+Cell[CellGroupData[{
+Cell[2302, 68, 479, 9, 31, "Input",ExpressionUUID->"9f897c30-fcf7-4674-86a0-782f985da4b3"],
+Cell[2784, 79, 2124, 70, 144, "Output",ExpressionUUID->"f64086e7-2b25-4871-b8c3-7bcbeed5da1e"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
