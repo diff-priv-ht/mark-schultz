@@ -10,148 +10,442 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      5617,        171]
-NotebookOptionsPosition[      4924,        152]
-NotebookOutlinePosition[      5259,        167]
-CellTagsIndexPosition[      5216,        164]
+NotebookDataLength[     17915,        482]
+NotebookOptionsPosition[     16361,        446]
+NotebookOutlinePosition[     16695,        461]
+CellTagsIndexPosition[     16652,        458]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
-Cell[BoxData[
- RowBox[{
-  RowBox[{"laplaceMGF", "[", 
-   RowBox[{"t_", ",", "\[Mu]_", ",", "b_"}], "]"}], " ", ":=", 
-  FractionBox[
-   RowBox[{"Exp", "[", 
-    RowBox[{"\[Mu]", " ", "*", " ", "t"}], "]"}], 
-   RowBox[{"1", " ", "-", " ", 
-    RowBox[{
-     RowBox[{"b", "^", "2"}], " ", "*", " ", 
-     RowBox[{"t", "^", "2"}]}]}]]}]], "Input",
- CellChangeTimes->{{3.736645208072879*^9, 3.736645221062986*^9}, {
-  3.736645258154999*^9, 3.736645275928926*^9}, {3.736645337855298*^9, 
-  3.736645352445367*^9}, {3.736645450787874*^9, 3.7366454514800873`*^9}},
- CellLabel->"In[1]:=",ExpressionUUID->"040c82e5-0368-485b-bf42-bcea20080073"],
 
+Cell[CellGroupData[{
 Cell[BoxData[
- RowBox[{
-  RowBox[{"chiSqMGF", "[", 
-   RowBox[{"t_", ",", " ", "df_"}], "]"}], " ", ":=", " ", 
-  RowBox[{
-   RowBox[{"(", 
-    RowBox[{"1", " ", "-", " ", 
-     RowBox[{"2", "t"}]}], ")"}], "^", 
-   RowBox[{"(", 
-    RowBox[{
-     RowBox[{"-", " ", "df"}], "/", "2"}], ")"}]}]}]], "Input",
- CellChangeTimes->{{3.736645357850276*^9, 3.736645362639763*^9}, {
-  3.736645402618092*^9, 3.736645434066626*^9}},
- CellLabel->"In[2]:=",ExpressionUUID->"af195d0a-fab6-4f38-ad33-ce850bd0d2b5"],
-
-Cell[BoxData[
- RowBox[{"\[IndentingNewLine]", 
-  RowBox[{
-   RowBox[{"desiredMGF", "[", 
-    RowBox[{"t_", ",", " ", "\[Mu]_", ",", " ", "b_", ",", " ", "df_"}], 
-    "]"}], " ", ":=", " ", 
+ RowBox[{"lapPlusChiSq", " ", "=", "  ", 
+  RowBox[{"TransformedDistribution", "[", 
    RowBox[{
-    RowBox[{"laplaceMGF", "[", 
-     RowBox[{"t", ",", "\[Mu]", ",", "b"}], "]"}], " ", "*", " ", 
-    RowBox[{"chiSqMGF", "[", 
-     RowBox[{"t", ",", "df"}], "]"}]}]}]}]], "Input",
- CellChangeTimes->{{3.736645435915543*^9, 3.73664551185938*^9}, {
-  3.7366456541697893`*^9, 3.736645655034906*^9}},
- CellLabel->"In[5]:=",ExpressionUUID->"bb5c6f31-2117-4140-8ff3-0c9421fcb535"],
+    RowBox[{"\[FormalX]1", "+", "\[FormalX]2"}], ",", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"\[FormalX]1", "\[Distributed]", 
+       RowBox[{"ChiSquareDistribution", "[", "df", "]"}]}], ",", 
+      RowBox[{"\[FormalX]2", "\[Distributed]", 
+       RowBox[{"LaplaceDistribution", "[", 
+        RowBox[{"0", ",", "b"}], "]"}]}]}], "}"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.736712983054186*^9, 3.736712991459221*^9}, {
+  3.736713146149376*^9, 3.736713150930654*^9}, {3.736713220217841*^9, 
+  3.736713222804797*^9}, {3.7367132734599667`*^9, 3.736713276741602*^9}, {
+  3.7367134940732403`*^9, 3.736713542302684*^9}, {3.736713605851469*^9, 
+  3.736713607229257*^9}},
+ CellLabel->"In[30]:=",ExpressionUUID->"807fa9db-60e2-40d7-a4da-be4bd78faf53"],
+
+Cell[BoxData[
+ RowBox[{"TransformedDistribution", "[", 
+  RowBox[{
+   RowBox[{"\[FormalX]1", "+", "\[FormalX]2"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"\[FormalX]1", "\[Distributed]", 
+      RowBox[{"ChiSquareDistribution", "[", "df", "]"}]}], ",", 
+     RowBox[{"\[FormalX]2", "\[Distributed]", 
+      RowBox[{"LaplaceDistribution", "[", 
+       RowBox[{"0", ",", "b"}], "]"}]}]}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{
+  3.736713151679538*^9, 3.736713223207369*^9, 3.736713278067477*^9, {
+   3.736713495808526*^9, 3.7367135427738028`*^9}, 3.736713607636056*^9, 
+   3.736727079073204*^9},
+ CellLabel->"Out[30]=",ExpressionUUID->"c29f11bd-1e3a-4b8d-85c7-eb7ad9c7623e"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"PDF", "[", 
+  RowBox[{"lapPlusChiSq", ",", " ", "x"}], "]"}]], "Input",
+ CellChangeTimes->{{3.736713038134362*^9, 3.736713043039815*^9}, {
+  3.73671310814072*^9, 3.736713139143417*^9}, {3.736713171514758*^9, 
+  3.736713173215157*^9}, {3.736713281648137*^9, 3.736713294140122*^9}, {
+  3.736713627922626*^9, 3.73671366181174*^9}, {3.736727089277858*^9, 
+  3.736727090634935*^9}, {3.7367271987985153`*^9, 3.7367272031445293`*^9}, {
+  3.736728141433351*^9, 3.7367281442182407`*^9}},
+ CellLabel->"In[38]:=",ExpressionUUID->"33ec5798-2402-4aef-9b3c-b6a5ebfaa311"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\[Piecewise]", GridBox[{
+       {
+        FractionBox[
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{"(", 
+            FractionBox["b", 
+             RowBox[{"2", "+", "b"}]], ")"}], 
+           RowBox[{"df", "/", "2"}]], " ", 
+          SuperscriptBox["\[ExponentialE]", 
+           FractionBox["x", "b"]]}], 
+         RowBox[{"2", " ", "b"}]], 
+        RowBox[{"x", "\[LessEqual]", "0"}]},
+       {
+        RowBox[{
+         FractionBox["1", 
+          RowBox[{"b", " ", 
+           RowBox[{"Gamma", "[", 
+            FractionBox["df", "2"], "]"}]}]], 
+         RowBox[{
+          SuperscriptBox["2", 
+           RowBox[{
+            RowBox[{"-", "1"}], "-", 
+            FractionBox["df", "2"]}]], " ", 
+          SuperscriptBox[
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"-", "2"}], "+", "b"}], ")"}], 
+           RowBox[{
+            RowBox[{"-", "df"}], "/", "2"}]], " ", 
+          SuperscriptBox["\[ExponentialE]", 
+           RowBox[{"-", 
+            FractionBox["x", "b"]}]], " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"-", "2"}], "+", "b"}], ")"}], 
+              RowBox[{"df", "/", "2"}]], " ", 
+             SuperscriptBox["\[ExponentialE]", 
+              FractionBox[
+               RowBox[{"2", " ", "x"}], "b"]], " ", 
+             SuperscriptBox["x", 
+              RowBox[{"df", "/", "2"}]], " ", 
+             RowBox[{"ExpIntegralE", "[", 
+              RowBox[{
+               RowBox[{"1", "-", 
+                FractionBox["df", "2"]}], ",", 
+               FractionBox[
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"2", "+", "b"}], ")"}], " ", "x"}], 
+                RowBox[{"2", " ", "b"}]]}], "]"}]}], "+", 
+            RowBox[{
+             SuperscriptBox["2", 
+              RowBox[{"df", "/", "2"}]], " ", 
+             SuperscriptBox["b", 
+              RowBox[{"df", "/", "2"}]], " ", 
+             RowBox[{"Gamma", "[", 
+              FractionBox["df", "2"], "]"}]}], "-", 
+            RowBox[{
+             SuperscriptBox["2", 
+              RowBox[{"df", "/", "2"}]], " ", 
+             SuperscriptBox["b", 
+              RowBox[{"df", "/", "2"}]], " ", 
+             RowBox[{"Gamma", "[", 
+              RowBox[{
+               FractionBox["df", "2"], ",", 
+               FractionBox[
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"-", "2"}], "+", "b"}], ")"}], " ", "x"}], 
+                RowBox[{"2", " ", "b"}]]}], "]"}]}]}], ")"}]}]}], 
+        TagBox["True",
+         "PiecewiseDefault",
+         AutoDelete->True]}
+      },
+      AllowedDimensions->{2, Automatic},
+      Editable->True,
+      GridBoxAlignment->{
+       "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+        "RowsIndexed" -> {}},
+      GridBoxItemSize->{
+       "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
+        "RowsIndexed" -> {}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.84]}, 
+          Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}, "RowsIndexed" -> {}},
+      Selectable->True]}
+   },
+   GridBoxAlignment->{
+    "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+     "RowsIndexed" -> {}},
+   GridBoxItemSize->{
+    "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
+     "RowsIndexed" -> {}},
+   GridBoxSpacings->{"Columns" -> {
+       Offset[0.27999999999999997`], {
+        Offset[0.35]}, 
+       Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+       Offset[0.2], {
+        Offset[0.4]}, 
+       Offset[0.2]}, "RowsIndexed" -> {}}],
+  "Piecewise",
+  DeleteWithContents->True,
+  Editable->False,
+  SelectWithContents->True,
+  Selectable->False]], "Output",
+ CellChangeTimes->{
+  3.7367130433851013`*^9, {3.736713159847993*^9, 3.7367131745709047`*^9}, 
+   3.736713227124406*^9, {3.736713267267695*^9, 3.73671329593526*^9}, 
+   3.73671361323316*^9, 3.73671366372353*^9, {3.736727080524885*^9, 
+   3.736727092294458*^9}, 3.736727205578937*^9, 3.736728145950061*^9},
+ CellLabel->"Out[38]=",ExpressionUUID->"d86354a8-c32d-4339-98ec-7894184b2063"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"FullSimplify", "[", "%35", "]"}]], "Input",
+ CellChangeTimes->{{3.7367298608385897`*^9, 3.736729861368701*^9}},
+ NumberMarks->False,
+ CellLabel->"In[39]:=",ExpressionUUID->"527ce462-e116-433d-9e70-d86cd0662e12"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\[Piecewise]", GridBox[{
+       {
+        FractionBox[
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{"(", 
+            FractionBox["b", 
+             RowBox[{"2", "+", "b"}]], ")"}], 
+           RowBox[{"df", "/", "2"}]], " ", 
+          SuperscriptBox["\[ExponentialE]", 
+           FractionBox["x", "b"]]}], 
+         RowBox[{"2", " ", "b"}]], 
+        RowBox[{"x", "\[LessEqual]", "0"}]},
+       {
+        FractionBox[
+         RowBox[{
+          SuperscriptBox["\[ExponentialE]", 
+           RowBox[{"-", 
+            FractionBox["x", "b"]}]], " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             SuperscriptBox[
+              RowBox[{"(", 
+               FractionBox[
+                RowBox[{
+                 RowBox[{"-", "2"}], "+", "b"}], "b"], ")"}], 
+              RowBox[{
+               RowBox[{"-", "df"}], "/", "2"}]], " ", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"Gamma", "[", 
+                FractionBox["df", "2"], "]"}], "-", 
+               RowBox[{"Gamma", "[", 
+                RowBox[{
+                 FractionBox["df", "2"], ",", 
+                 FractionBox[
+                  RowBox[{
+                   RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"-", "2"}], "+", "b"}], ")"}], " ", "x"}], 
+                  RowBox[{"2", " ", "b"}]]}], "]"}]}], ")"}]}], "+", 
+            RowBox[{
+             SuperscriptBox[
+              RowBox[{"(", 
+               FractionBox[
+                RowBox[{"2", "+", "b"}], "b"], ")"}], 
+              RowBox[{
+               RowBox[{"-", "df"}], "/", "2"}]], " ", 
+             SuperscriptBox["\[ExponentialE]", 
+              FractionBox[
+               RowBox[{"2", " ", "x"}], "b"]], " ", 
+             RowBox[{"Gamma", "[", 
+              RowBox[{
+               FractionBox["df", "2"], ",", 
+               FractionBox[
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"2", "+", "b"}], ")"}], " ", "x"}], 
+                RowBox[{"2", " ", "b"}]]}], "]"}]}]}], ")"}]}], 
+         RowBox[{"2", " ", "b", " ", 
+          RowBox[{"Gamma", "[", 
+           FractionBox["df", "2"], "]"}]}]], 
+        TagBox["True",
+         "PiecewiseDefault",
+         AutoDelete->True]}
+      },
+      AllowedDimensions->{2, Automatic},
+      Editable->True,
+      GridBoxAlignment->{
+       "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+        "RowsIndexed" -> {}},
+      GridBoxItemSize->{
+       "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
+        "RowsIndexed" -> {}},
+      GridBoxSpacings->{"Columns" -> {
+          Offset[0.27999999999999997`], {
+           Offset[0.84]}, 
+          Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+          Offset[0.2], {
+           Offset[0.4]}, 
+          Offset[0.2]}, "RowsIndexed" -> {}},
+      Selectable->True]}
+   },
+   GridBoxAlignment->{
+    "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+     "RowsIndexed" -> {}},
+   GridBoxItemSize->{
+    "Columns" -> {{Automatic}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
+     "RowsIndexed" -> {}},
+   GridBoxSpacings->{"Columns" -> {
+       Offset[0.27999999999999997`], {
+        Offset[0.35]}, 
+       Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+       Offset[0.2], {
+        Offset[0.4]}, 
+       Offset[0.2]}, "RowsIndexed" -> {}}],
+  "Piecewise",
+  DeleteWithContents->True,
+  Editable->False,
+  SelectWithContents->True,
+  Selectable->False]], "Output",
+ CellChangeTimes->{3.736727096935376*^9, 3.736729869667733*^9},
+ CellLabel->"Out[39]=",ExpressionUUID->"b3a69be4-4cb2-477b-92c9-65c3f337e1aa"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ratioDist", " ", "=", " ", 
+  RowBox[{"TransformedDistribution", "[", 
+   RowBox[{
+    FractionBox[
+     RowBox[{"U1", "+", "L1"}], 
+     RowBox[{"U2", "+", "L2"}]], ",", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"U1", "\[Distributed]", 
+       RowBox[{"ChiSquareDistribution", "[", "df", "]"}]}], ",", 
+      RowBox[{"U1", "\[Distributed]", 
+       RowBox[{"ChiSquareDistribution", "[", "df", "]"}]}], " ", ",", 
+      RowBox[{"L1", "\[Distributed]", 
+       RowBox[{"LaplaceDistribution", "[", 
+        RowBox[{"0", ",", " ", "b"}], "]"}]}], ",", 
+      RowBox[{"L2", "\[Distributed]", 
+       RowBox[{"LaplaceDistribution", "[", 
+        RowBox[{"0", ",", " ", "b"}], "]"}]}]}], "}"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.736713313750868*^9, 3.736713407644912*^9}, {
+  3.736732890268392*^9, 3.736732899920803*^9}},
+ CellLabel->"In[40]:=",ExpressionUUID->"a364d877-3a11-493c-83ea-bbbe7a82ae88"],
+
+Cell[BoxData[
+ RowBox[{"TransformedDistribution", "[", 
+  RowBox[{
+   FractionBox[
+    RowBox[{"\[FormalX]1", "+", "\[FormalX]3"}], 
+    RowBox[{"\[FormalX]4", "+", "U2"}]], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"\[FormalX]1", "\[Distributed]", 
+      RowBox[{"ChiSquareDistribution", "[", "df", "]"}]}], ",", 
+     RowBox[{"\[FormalX]1", "\[Distributed]", 
+      RowBox[{"ChiSquareDistribution", "[", "df", "]"}]}], ",", 
+     RowBox[{"\[FormalX]3", "\[Distributed]", 
+      RowBox[{"LaplaceDistribution", "[", 
+       RowBox[{"0", ",", "b"}], "]"}]}], ",", 
+     RowBox[{"\[FormalX]4", "\[Distributed]", 
+      RowBox[{"LaplaceDistribution", "[", 
+       RowBox[{"0", ",", "b"}], "]"}]}]}], "}"}]}], "]"}]], "Output",
+ CellChangeTimes->{{3.7367134010442877`*^9, 3.736713407954694*^9}, 
+   3.736727080593379*^9, 3.7367329006626*^9},
+ CellLabel->"Out[40]=",ExpressionUUID->"ba813e67-c09d-40a5-8a68-5e17e4452371"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{"Simplify", "[", 
-  RowBox[{"InverseLaplaceTransform", "[", 
-   RowBox[{
-    RowBox[{"desiredMGF", "[", 
-     RowBox[{"t", ",", " ", "0", ",", " ", "b", ",", " ", "df"}], "]"}], ",", 
-    " ", "t", ",", " ", "x"}], "]"}], "]"}]], "Input",
- CellChangeTimes->{{3.736645667580802*^9, 3.736645688343493*^9}, {
-   3.73664572442246*^9, 3.736645764275651*^9}, 3.7366458421735764`*^9},
- CellLabel->"In[12]:=",ExpressionUUID->"9f897c30-fcf7-4674-86a0-782f985da4b3"],
+  RowBox[{"PDF", "[", 
+   RowBox[{"ratioDist", ",", "x"}], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.736713403009398*^9, 3.736713417459487*^9}},
+ CellLabel->"In[41]:=",ExpressionUUID->"a319a86e-e38c-4d75-9904-a8ba9aa80340"],
 
 Cell[BoxData[
- RowBox[{
-  FractionBox["1", 
-   RowBox[{"2", " ", "b", " ", 
-    RowBox[{"Gamma", "[", 
-     FractionBox["df", "2"], "]"}]}]], 
+ RowBox[{"PDF", "[", 
   RowBox[{
-   SuperscriptBox["\[ExponentialE]", 
-    RowBox[{"-", 
-     FractionBox["x", "b"]}]], " ", 
-   SuperscriptBox[
-    RowBox[{"(", 
-     RowBox[{"-", "x"}], ")"}], 
-    RowBox[{"df", "/", "2"}]], " ", 
-   RowBox[{"(", 
+   RowBox[{"TransformedDistribution", "[", 
     RowBox[{
-     RowBox[{
-      SuperscriptBox["\[ExponentialE]", 
-       FractionBox[
-        RowBox[{"2", " ", "x"}], "b"]], " ", 
-      SuperscriptBox[
-       RowBox[{"(", 
-        RowBox[{
-         RowBox[{"(", 
-          RowBox[{
-           RowBox[{"-", "1"}], "+", 
-           FractionBox["2", "b"]}], ")"}], " ", "x"}], ")"}], 
-       RowBox[{
-        RowBox[{"-", "df"}], "/", "2"}]], " ", 
-      RowBox[{"(", 
-       RowBox[{
-        RowBox[{"-", 
-         RowBox[{"Gamma", "[", 
-          FractionBox["df", "2"], "]"}]}], "+", 
-        RowBox[{"Gamma", "[", 
-         RowBox[{
-          FractionBox["df", "2"], ",", 
-          RowBox[{
-           RowBox[{"(", 
-            RowBox[{
-             RowBox[{"-", 
-              FractionBox["1", "2"]}], "+", 
-             FractionBox["1", "b"]}], ")"}], " ", "x"}]}], "]"}]}], ")"}]}], 
-     "+", 
-     RowBox[{
-      SuperscriptBox[
-       RowBox[{"(", 
-        RowBox[{"-", 
-         FractionBox[
-          RowBox[{
-           RowBox[{"(", 
-            RowBox[{"2", "+", "b"}], ")"}], " ", "x"}], "b"]}], ")"}], 
-       RowBox[{
-        RowBox[{"-", "df"}], "/", "2"}]], " ", 
-      RowBox[{"(", 
-       RowBox[{
-        RowBox[{"Gamma", "[", 
-         FractionBox["df", "2"], "]"}], "-", 
-        RowBox[{"Gamma", "[", 
-         RowBox[{
-          FractionBox["df", "2"], ",", 
-          RowBox[{"-", 
-           FractionBox[
-            RowBox[{
-             RowBox[{"(", 
-              RowBox[{"2", "+", "b"}], ")"}], " ", "x"}], 
-            RowBox[{"2", " ", "b"}]]}]}], "]"}]}], ")"}]}]}], 
-    ")"}]}]}]], "Output",
- CellChangeTimes->{{3.7366457312934847`*^9, 3.736645771404529*^9}, 
-   3.736645844635323*^9},
- CellLabel->"Out[12]=",ExpressionUUID->"f64086e7-2b25-4871-b8c3-7bcbeed5da1e"]
+     FractionBox[
+      RowBox[{"\[FormalX]1", "+", "\[FormalX]3"}], 
+      RowBox[{"\[FormalX]4", "+", "U2"}]], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\[FormalX]1", "\[Distributed]", 
+        RowBox[{"ChiSquareDistribution", "[", "df", "]"}]}], ",", 
+       RowBox[{"\[FormalX]1", "\[Distributed]", 
+        RowBox[{"ChiSquareDistribution", "[", "df", "]"}]}], ",", 
+       RowBox[{"\[FormalX]3", "\[Distributed]", 
+        RowBox[{"LaplaceDistribution", "[", 
+         RowBox[{"0", ",", "b"}], "]"}]}], ",", 
+       RowBox[{"\[FormalX]4", "\[Distributed]", 
+        RowBox[{"LaplaceDistribution", "[", 
+         RowBox[{"0", ",", "b"}], "]"}]}]}], "}"}]}], "]"}], ",", "x"}], 
+  "]"}]], "Output",
+ CellChangeTimes->{3.7367270806320868`*^9, 3.736732904196184*^9},
+ CellLabel->"Out[41]=",ExpressionUUID->"a148c0e2-806b-41cf-8486-7f3ab855a09a"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"PDF", "[", 
+  RowBox[{
+   RowBox[{"TransformedDistribution", "[", 
+    RowBox[{
+     FractionBox[
+      RowBox[{"\[FormalX]1", "+", "\[FormalX]3"}], 
+      RowBox[{"\[FormalX]4", "+", "U2"}]], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\[FormalX]1", "\[Distributed]", 
+        RowBox[{"ChiSquareDistribution", "[", "df1", "]"}]}], ",", 
+       RowBox[{"\[FormalX]1", "\[Distributed]", 
+        RowBox[{"ChiSquareDistribution", "[", "df2", "]"}]}], ",", 
+       RowBox[{"\[FormalX]3", "\[Distributed]", 
+        RowBox[{"LaplaceDistribution", "[", 
+         RowBox[{"0", ",", "b1"}], "]"}]}], ",", 
+       RowBox[{"\[FormalX]4", "\[Distributed]", 
+        RowBox[{"LaplaceDistribution", "[", 
+         RowBox[{"0", ",", "b2"}], "]"}]}]}], "}"}]}], "]"}], ",", "x"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{3.736727073816934*^9},
+ CellLabel->"In[34]:=",ExpressionUUID->"84c16aa8-3285-49e0-bcd1-eb19fdc0f4a3"],
+
+Cell[BoxData[
+ RowBox[{"PDF", "[", 
+  RowBox[{
+   RowBox[{"TransformedDistribution", "[", 
+    RowBox[{
+     FractionBox[
+      RowBox[{"\[FormalX]1", "+", "\[FormalX]3"}], 
+      RowBox[{"\[FormalX]4", "+", "U2"}]], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"\[FormalX]1", "\[Distributed]", 
+        RowBox[{"ChiSquareDistribution", "[", "df1", "]"}]}], ",", 
+       RowBox[{"\[FormalX]1", "\[Distributed]", 
+        RowBox[{"ChiSquareDistribution", "[", "df2", "]"}]}], ",", 
+       RowBox[{"\[FormalX]3", "\[Distributed]", 
+        RowBox[{"LaplaceDistribution", "[", 
+         RowBox[{"0", ",", "b1"}], "]"}]}], ",", 
+       RowBox[{"\[FormalX]4", "\[Distributed]", 
+        RowBox[{"LaplaceDistribution", "[", 
+         RowBox[{"0", ",", "b2"}], "]"}]}]}], "}"}]}], "]"}], ",", "x"}], 
+  "]"}]], "Output",
+ CellChangeTimes->{{3.736727073903356*^9, 3.736727080676215*^9}},
+ CellLabel->"Out[34]=",ExpressionUUID->"74cce510-195e-4cf5-bcf8-fa1185f28995"]
 }, Open  ]]
 },
 WindowSize->{808, 911},
-WindowMargins->{{322, Automatic}, {33, Automatic}},
+WindowMargins->{{Automatic, 44}, {Automatic, 40}},
 FrontEndVersion->"11.3 for Linux x86 (64-bit) (March 6, 2018)",
 StyleDefinitions->"Default.nb"
 ]
@@ -166,16 +460,31 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 635, 14, 56, "Input",ExpressionUUID->"040c82e5-0368-485b-bf42-bcea20080073"],
-Cell[1196, 36, 499, 13, 31, "Input",ExpressionUUID->"af195d0a-fab6-4f38-ad33-ce850bd0d2b5"],
-Cell[1698, 51, 579, 13, 55, "Input",ExpressionUUID->"bb5c6f31-2117-4140-8ff3-0c9421fcb535"],
 Cell[CellGroupData[{
-Cell[2302, 68, 479, 9, 31, "Input",ExpressionUUID->"9f897c30-fcf7-4674-86a0-782f985da4b3"],
-Cell[2784, 79, 2124, 70, 144, "Output",ExpressionUUID->"f64086e7-2b25-4871-b8c3-7bcbeed5da1e"]
+Cell[580, 22, 866, 17, 59, InheritFromParent,ExpressionUUID->"807fa9db-60e2-40d7-a4da-be4bd78faf53"],
+Cell[1449, 41, 690, 15, 63, "Output",ExpressionUUID->"c29f11bd-1e3a-4b8d-85c7-eb7ad9c7623e"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2176, 61, 581, 9, 31, "Input",ExpressionUUID->"33ec5798-2402-4aef-9b3c-b6a5ebfaa311"],
+Cell[2760, 72, 4445, 122, 186, "Output",ExpressionUUID->"d86354a8-c32d-4339-98ec-7894184b2063"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7242, 199, 235, 4, 31, "Input",ExpressionUUID->"527ce462-e116-433d-9e70-d86cd0662e12"],
+Cell[7480, 205, 3747, 105, 124, "Output",ExpressionUUID->"b3a69be4-4cb2-477b-92c9-65c3f337e1aa"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[11264, 315, 932, 21, 111, "Input",ExpressionUUID->"a364d877-3a11-493c-83ea-bbbe7a82ae88"],
+Cell[12199, 338, 923, 20, 124, "Output",ExpressionUUID->"ba813e67-c09d-40a5-8a68-5e17e4452371"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13159, 363, 268, 5, 31, "Input",ExpressionUUID->"a319a86e-e38c-4d75-9904-a8ba9aa80340"],
+Cell[13430, 370, 964, 22, 157, "Output",ExpressionUUID->"a148c0e2-806b-41cf-8486-7f3ab855a09a"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14431, 397, 943, 22, 126, InheritFromParent,ExpressionUUID->"84c16aa8-3285-49e0-bcd1-eb19fdc0f4a3"],
+Cell[15377, 421, 968, 22, 124, "Output",ExpressionUUID->"74cce510-195e-4cf5-bcf8-fa1185f28995"]
 }, Open  ]]
 }
 ]
 *)
-
-(* End of internal cache information *)
 

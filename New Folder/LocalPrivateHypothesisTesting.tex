@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\begin{document}
+\title{Review of \emph{Local Private Hypothesis Testing:}\\ $\chi^2$ tests.}
+\maketitle
+\section{The BibTex}
+First, this has the following BibTex:
+\begin{lstlisting}
+@ARTICLE{2017arXiv170907155G,
+   author = {{Gaboardi}, M. and {Rogers}, R.},
+    title = "{Local Private Hypothesis Testing: Chi-Square Tests}",
+  journal = {ArXiv e-prints},
+archivePrefix = "arXiv",
+   eprint = {1709.07155},
+ primaryClass = "math.ST",
+ keywords = {Mathematics - Statistics Theory, Computer Science - Cryptography and Security},
+     year = 2017,
+    month = sep,
+   adsurl = {http://adsabs.harvard.edu/abs/2017arXiv170907155G},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+\end{lstlisting}
+\section{The Paper}
+We'll try to answer the following questions:
+\begin{enumerate}
+\item \emph{What new background is needed for this article}?
+
+This uses the concept of \emph{concentrated differential privacy}.
+This is a variant of differential privacy where the ``defining inequality'' doesn't hold for \emph{all events}.
+Recall that for $(\epsilon,\delta)$ differential privacy, we say that for any two neighboring databases that:
+\begin{equation}
+\Pr[M(x) \in S]\leq e^{\epsilon}\Pr[M(y)\in S] + \delta
+\end{equation}
+must hold for \emph{all} subsets $S\subseteq\text{Range}(M(x))$.
+
+Concentrated differential privacy instead says that:
+\begin{equation}
+\mathbb{E}_{y\sim\mathcal{M}(x)}[\exp(t\ln(\frac{\Pr[M(x) = y}{\Pr[M(y) = y}) - \rho)]\leq e^{t^2\rho},\quad \forall t\geq 0
+\end{equation}
+Note that the $\ln\frac{f(x)}{f(y)} - \rho$ quantity is \emph{essentially} the same thing as $\epsilon$ in the definition of $(\epsilon,\rho)$ differential privacy.
+If $M(x)$ was $(\epsilon,\rho)$ differentially private, we'd have that this inequality is just (bounded by):
+\begin{equation}
+\mathbb{E}[\exp(t\epsilon)] \leq \exp(t^2\rho)
+\end{equation}
+
+We can view the Advanced Composition Theorem as a \emph{concentration inequality}, saying that \emph{privacy loss} is concentrated about the mean.
+
+Concentrated Differential privacy makes a \emph{new} (incomparable) definition of differential privacy, with the intent that it satisfies a concentration inequality under composition.
+The tradeoffs are that in $(\epsilon,\delta)$ DP, with probability $\delta$ privacy loss can be \emph{arbitrarily bad}.
+Concentrated differential privacy essentially says that the \emph{privacy loss} is small mean, and sub-gaussian.
+
+
+\item \emph{What new techniques do the authors apply?}
+
+
+\item \emph{What new results do the authors get?}
+
+They develop a $\chi^2$ test for \emph{local, concentrated} differential privacy.
+This is the first of its kind (other concentrated differential privacy ones existed, 
+
+\end{enumerate}
+\end{document}
