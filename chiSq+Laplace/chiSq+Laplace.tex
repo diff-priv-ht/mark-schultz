@@ -163,7 +163,7 @@ To see how bad it can really get, we can examine the \emph{worst} integral, whic
 \begin{equation}
 \int_{y = 0}^\infty y\rho_{>0}(zy)\rho_{>0}(y)\mathrm{d}y,\quad z > 0
 \end{equation}
-This will end up being four terms, the first of which will be:
+This will end up being four terms\footnote{This is just because it'll be $\int (a+b)(c+d) = \int ac + \int ad + \int bc + \int bd$.}, the first of which will be:
 \begin{equation}
 \frac{1}{(2b)^2\Gamma(df/2)^2}\pqty{\frac{b}{b+2}}^{df}\int_{y = 0}^\infty\pqty{e^{y(z+1)/b}\pqty{\int_{t = \frac{b+2}{2}(yz/b)}^{\infty}t^{(df/2)-1}e^{-t}\mathrm{d}t}\pqty{\int_{t = \frac{b+2}{2}(y/b)}^{\infty}t^{(df/2)-1}e^{-t}\mathrm{d}t}}
 \end{equation}

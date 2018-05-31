@@ -55,11 +55,22 @@ Concentrated differential privacy essentially says that the \emph{privacy loss} 
 
 \item \emph{What new techniques do the authors apply?}
 
+While I don't understand it super well, it seems like for 2 of their three cases they can derive distributions for $\tilde{p}$.
+
+Their computations of the asymptotic distribution of everything seems to utilize heavily some stuff from a multivariable version of probability, which I've never seen before.
+
 
 \item \emph{What new results do the authors get?}
 
-They develop a $\chi^2$ test for \emph{local, concentrated} differential privacy.
-This is the first of its kind (other concentrated differential privacy ones existed, 
+They develop three different $\chi^2$ hypothesis test for \emph{local, concentrated} differential privacy.
+These are:
+\begin{enumerate}
+\item A statistic guaranteed to converge to a $\chi^2$ distribution under $H_0$
+\item A statistic guaranteed to converge to a $\chi^2$ distribution under $H_0$ when a private value is chosen from each participant via the exponential mechanism
+\item A statistic that converges to $\chi^2$ when private data is chosen via a bit flipping mechanism.
+\end{enumerate}
+They also develop the corresponding independence tests.
+Finally, they show experimental evidence that no single one of the developed tests is superior (in power) in all cases.
 
 \end{enumerate}
 \end{document}
